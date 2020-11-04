@@ -637,13 +637,13 @@ function parse(content, pathToFile, cb) {
   }
 
   function resolveTileSet(unresolvedTileSet, cb) {
-    parseFile(target, function(err, resolvedTileSet) {
     var isBrowser = typeof window !== 'undefined';
 
     var target = isBrowser
       ? urljoin(pathToDir, unresolvedTileSet.source)
       : path.join(pathToDir, unresolvedTileSet.source);
 
+    parseFile(target, function(err, resolvedTileSet) {
       if (err) {
         cb(err);
         return;
