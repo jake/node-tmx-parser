@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var zlib = require('zlib');
 var Pend = require('pend');
+var urljoin = require('url-join');
 
 exports.readFile = defaultReadFile;
 exports.parseFile = parseFile;
@@ -636,8 +637,13 @@ function parse(content, pathToFile, cb) {
   }
 
   function resolveTileSet(unresolvedTileSet, cb) {
-    var target = path.join(pathToDir, unresolvedTileSet.source);
     parseFile(target, function(err, resolvedTileSet) {
+    var isBrowser = typeof window !== 'undefined';
+
+    var target = isBrowser
+      ? urljoin(pathToDir, unresolvedTileSet.source)
+      : path.join(pathToDir, unresolvedTileSet.source);
+
       if (err) {
         cb(err);
         return;
